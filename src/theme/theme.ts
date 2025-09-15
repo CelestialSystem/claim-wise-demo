@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1B365D', // Deep professional blue
+      main: '#636cf1', // Deep professional blue
       light: '#2E5984',
       dark: '#0F2642',
       contrastText: '#FFFFFF',
@@ -128,9 +128,9 @@ export const theme = createTheme({
           },
         },
         contained: {
-          background: 'linear-gradient(135deg, #1B365D 0%, #2E5984 100%)',
-          '&:hover': {
-            background: 'linear-gradient(135deg, #0F2642 0%, #1B365D 100%)',
+          background: "linear-gradient(135deg, #636cf1 0%, #4a54e1 100%)",
+          "&:hover": {
+            background: "linear-gradient(135deg, #5a63e0 0%, #4c55c9 100%)",
           },
         },
       },
