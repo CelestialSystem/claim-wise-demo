@@ -86,7 +86,7 @@ const ClaimsListPage = () => {
   };
 
   const ClaimCard = ({ claim }: { claim: Claim }) => (
-    <Card sx={{ mb: 2, boxShadow: "none" }}>
+    <Card sx={{ mb: 2, boxShadow: "none",   "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" }, }}>
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
           <Typography variant="h6" color="primary">
@@ -149,7 +149,7 @@ const ClaimsListPage = () => {
       </Box>
 
       <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' }} gap={3} mb={4}>
-        <Card sx={{ boxShadow: "none" }}>
+        <Card sx={{ boxShadow: "none" ,   "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },}}>
           <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <Box>
               <ReceiptLongRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
@@ -162,7 +162,7 @@ const ClaimsListPage = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ boxShadow: "none" }}>
+        <Card sx={{ boxShadow: "none" ,   "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },}}>
           <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
             <BookmarkAddedRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
           </Box>
@@ -174,7 +174,7 @@ const ClaimsListPage = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ boxShadow: "none" }}>
+        <Card sx={{ boxShadow: "none" ,   "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },}}>
           <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
             <HourglassTopRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
           </Box>
@@ -186,7 +186,7 @@ const ClaimsListPage = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ boxShadow: "none" }}>
+        <Card sx={{ boxShadow: "none" ,   "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },}}>
           <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
             <PendingActionsRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
           </Box>
