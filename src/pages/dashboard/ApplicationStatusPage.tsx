@@ -13,6 +13,12 @@ import {
   ListItemText,
   useTheme,
   useMediaQuery,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
 } from '@mui/material';
 import {
   Timeline,
@@ -21,6 +27,7 @@ import {
   TimelineConnector,
   TimelineContent,
   TimelineDot,
+  TimelineOppositeContent,
 } from '@mui/lab';
 import {
   CheckCircle,
@@ -31,6 +38,88 @@ import {
   CalendarToday,
   AttachMoney,
 } from '@mui/icons-material';
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
+const claims = [
+  {
+    id: "FC-2024-001",
+    type: "Vehicle Damage",
+    submitted: "2024-07-20",
+    updated: "2024-07-25",
+    status: "In Progress",
+  },
+  {
+    id: "FC-2024-002",
+    type: "Home Burglary",
+    submitted: "2024-07-18",
+    updated: "2024-07-22",
+    status: "Pending Review",
+  },
+  {
+    id: "FC-2024-003",
+    type: "Medical Expense",
+    submitted: "2024-07-15",
+    updated: "2024-07-20",
+    status: "Approved",
+  },
+  {
+    id: "FC-2024-004",
+    type: "Travel Cancellation",
+    submitted: "2024-07-10",
+    updated: "2024-07-14",
+    status: "Rejected",
+  },
+  {
+    id: "FC-2024-005",
+    type: "Property Damage",
+    submitted: "2024-07-05",
+    updated: "2024-07-08",
+    status: "In Progress",
+  },
+  {
+    id: "FC-2024-006",
+    type: "Personal Liability",
+    submitted: "2024-07-01",
+    updated: "2024-07-02",
+    status: "Approved",
+  },
+];
+
+
+const events = [
+  {
+    date: "October 24, 2023",
+    title: "Claim Submitted",
+    description: "Your claim has been successfully submitted and is awaiting initial review.",
+    status: "default",
+  },
+  {
+    date: "October 26, 2023",
+    title: "Initial Review Completed",
+    description: "Our team has completed the initial review of your claim. We are gathering necessary information to proceed.",
+    status: "default",
+  },
+  {
+    date: "October 27, 2023",
+    title: "Documents Requested",
+    description: "Additional documents are required to process your claim. Please upload the requested files through the action area below.",
+    status: "active",
+    action: true,
+  },
+  {
+    date: "October 29, 2023",
+    title: "Assessment In Progress",
+    description: "Once documents are received, your claim will move into the assessment phase, where details will be thoroughly evaluated.",
+    status: "default",
+  },
+];
+
+const statusColors: Record<string, string> = {
+  Approved: "success",
+  Rejected: "error",
+  "In Progress": "warning",
+  "Pending Review": "info",
+};
 
 interface ClaimStatus {
   id: string;
@@ -102,6 +191,17 @@ const ApplicationStatusPage = () => {
   const [claimData] = useState<ClaimStatus>(mockClaimStatus);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("Newest First");
+
+  const filteredClaims = claims
+    .filter((claim) => statusFilter === "All" || claim.status === statusFilter)
+    .sort((a, b) => {
+      if (sortOrder === "Newest First") {
+        return new Date(b.submitted).getTime() - new Date(a.submitted).getTime();
+      }
+      return new Date(a.submitted).getTime() - new Date(b.submitted).getTime();
+    });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -137,7 +237,116 @@ const ApplicationStatusPage = () => {
       <Typography variant="body1" color="text.secondary" mb={4}>
         Track the progress of your insurance claim
       </Typography>
+      <Box sx={{ p: 3 }}>
+      {/* Filters */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+          p: 2,
+          borderRadius: 2,
+          border: "1px solid #eee",
+          backgroundColor: "#fff",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
+        {/* Filter by Status */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography fontWeight="bold">Filter by Status:</Typography>
+          <Select
+            size="small"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            sx={{
+              minWidth: 160,
+              borderRadius: 2,
+              "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ddd" },
+            }}
+          >
+            <MenuItem value="All">All</MenuItem>
+            {Object.keys(statusColors).map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
 
+        {/* Sort By */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography fontWeight="bold">Sort by:</Typography>
+          <Select
+            size="small"
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            sx={{
+              minWidth: 160,
+              borderRadius: 2,
+              "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ddd" },
+            }}
+          >
+            <MenuItem value="Newest First">Newest First</MenuItem>
+            <MenuItem value="Oldest First">Oldest First</MenuItem>
+          </Select>
+        </Box>
+      </Box>
+
+      {/* Claims List with Flex */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          justifyContent: "flex-start",
+        }}
+      >
+        {filteredClaims.map((claim) => (
+          <Card
+            key={claim.id}
+            sx={{
+              flex: "1 1 calc(33.333% - 16px)", // 3 per row
+              minWidth: "300px",
+              borderRadius: 3,
+              boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
+              position: "relative",
+              "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold">
+                Claim ID: {claim.id}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                <strong>Type:</strong> {claim.type}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Submitted: {claim.submitted}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Last Updated: {claim.updated}
+              </Typography>
+
+              {/* Status Badge */}
+              <Chip
+                label={claim.status}
+                color={statusColors[claim.status]}
+                variant="filled"
+                sx={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  fontWeight: "bold",
+                }}
+              />
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    </Box>
       <Box display="flex" flexDirection={isMobile ? 'column' : 'row'} gap={3}>
         <Box flex={isMobile ? 1 : 2}>
           <Card sx={{ mb: 3 }}>
@@ -184,36 +393,104 @@ const ApplicationStatusPage = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Claim Progress Timeline
-              </Typography>
-              <Timeline sx={{ mt: 2 }}>
-                {claimData.timeline.map((item, index) => (
-                  <TimelineItem key={index}>
-                    <TimelineSeparator>
-                      <TimelineDot sx={{ p: 0 }}>
-                        {getTimelineIcon(item.status)}
-                      </TimelineDot>
-                      {index < claimData.timeline.length - 1 && <TimelineConnector />}
-                    </TimelineSeparator>
-                    <TimelineContent>
-                      <Typography variant="h6" component="span">
-                        {item.title}
+          <Card sx={{ borderRadius: 3, p: 2 }}>
+      <CardContent>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          Claim Timeline
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3 }}>
+          Current Status:{" "}
+          <Typography
+            component="span"
+            sx={{ color: "primary.main", fontWeight: "500" }}
+          >
+            Under Review - Awaiting Documents
+          </Typography>
+        </Typography>
+
+        <Timeline
+          sx={{
+            p: 0,
+            m: 0,
+            "& .MuiTimelineItem-root": {
+              minHeight: "auto",
+              "&::before": { flex: 0, padding: 0 }, // removes extra left space
+            },
+          }}
+        >
+          {events.map((event, index) => (
+            <TimelineItem key={index}>
+              {/* Dot + line */}
+              <TimelineSeparator>
+                <TimelineDot
+                  color={event.status === "active" ? "primary" : "grey"}
+                  variant={event.status === "active" ? "filled" : "outlined"}
+                />
+                {index < events.length - 1 && (
+                  <TimelineConnector
+                    sx={{
+                      bgcolor:
+                        event.status === "active"
+                          ? "primary.main"
+                          : "grey.400",
+                    }}
+                  />
+                )}
+              </TimelineSeparator>
+
+              {/* Right side content (title + desc + date) */}
+              <TimelineContent sx={{ pb: 4 }}>
+                <Typography fontWeight="bold">{event.title}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {event.description}
+                </Typography>
+                {/* Date shown at bottom right */}
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: "block", mt: 1, fontStyle: "italic" }}
+                >
+                  {event.date}
+                </Typography>
+
+                {/* Special Action Card */}
+                {event.action && (
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      mt: 2,
+                      borderRadius: 2,
+                      borderColor: "grey.300",
+                      bgcolor: "grey.50",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography fontWeight="bold">Action Required</Typography>
+                      <Typography variant="body2" sx={{ mb: 2 }}>
+                        Upload Document
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.date}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mt: 1 }}>
-                        {item.description}
-                      </Typography>
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-              </Timeline>
-            </CardContent>
-          </Card>
+                      <Button
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                        fullWidth
+                        sx={{
+                          borderRadius: 2,
+                          textTransform: "none",
+                          bgcolor: "primary.light",
+                          "&:hover": { bgcolor: "primary.main" },
+                        }}
+                      >
+                        Upload Documents
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
+      </CardContent>
+    </Card>
         </Box>
 
         <Box flex={isMobile ? 1 : 1} maxWidth={isMobile ? '100%' : '400px'}>

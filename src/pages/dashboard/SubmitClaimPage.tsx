@@ -5,82 +5,32 @@ import {
   Card,
   CardContent,
   Typography,
+  Button,
+  TextField,
+  MenuItem,
   Stepper,
   Step,
   StepLabel,
-  Button,
-  TextField,
-  Alert,
-  CircularProgress,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Chip,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { CloudUpload, CheckCircle, ArrowBack, Send } from '@mui/icons-material';
-import FileUploadComponent from '../../components/common/FileUploadComponent';
 
-interface FormData {
-  policyNumber: string;
-  accidentDate: string;
-  accidentLocation: string;
-  description: string;
-  documents: {
-    insurance: File | null;
-    license: File | null;
-    registration: File | null;
-    photos: File[];
-    mv104: File | null;
-    nf2: File | null;
-  };
-}
-
-const steps = ['Basic Information', 'Upload Documents', 'Review & Submit'];
+const steps = ['Personal Information', 'Accident Details', 'Document Uploads'];
 
 const SubmitClaimPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    policyNumber: '',
-    accidentDate: '',
-    accidentLocation: '',
-    description: '',
-    documents: {
-      insurance: null,
-      license: null,
-      registration: null,
-      photos: [],
-      mv104: null,
-      nf2: null,
-    },
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    street: '',
+    city: '',
+    country: '',
   });
+
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const handleNext = () => {
-    if (validateStep()) {
-      setActiveStep((prev) => prev + 1);
-    }
-  };
-
-  const handleBack = () => {
-    setActiveStep((prev) => prev - 1);
-  };
-
-  const validateStep = () => {
-    switch (activeStep) {
-      case 0:
-        return formData.policyNumber && formData.accidentDate && formData.accidentLocation && formData.description;
-      case 1:
-        return formData.documents.insurance && formData.documents.license && formData.documents.registration;
-      default:
-        return true;
-    }
-  };
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -89,224 +39,77 @@ const SubmitClaimPage = () => {
     }));
   };
 
-  const handleFileUpload = (field: string, file: File | File[]) => {
-    setFormData(prev => ({
-      ...prev,
-      documents: {
-        ...prev.documents,
-        [field]: file
-      }
-    }));
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      navigate('/', { 
-        state: { message: 'Claim submitted successfully! You will receive a confirmation email shortly.' }
-      });
-    } catch (error) {
-      console.error('Submission failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleNext = () => setActiveStep(prev => prev + 1);
 
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
         return (
-          <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={3}>
-            <TextField
-              fullWidth
-              label="Policy Number"
-              value={formData.policyNumber}
-              onChange={(e) => handleInputChange('policyNumber', e.target.value)}
-              required
-              placeholder="POL-123456789"
-            />
-            <TextField
-              fullWidth
-              label="Accident Date"
-              type="date"
-              value={formData.accidentDate}
-              onChange={(e) => handleInputChange('accidentDate', e.target.value)}
-              required
-              InputLabelProps={{ shrink: true }}
-            />
-            <Box gridColumn={{ xs: '1', md: '1 / -1' }}>
-              <TextField
-                fullWidth
-                label="Accident Location"
-                value={formData.accidentLocation}
-                onChange={(e) => handleInputChange('accidentLocation', e.target.value)}
-                required
-                placeholder="Street address, city, state"
-              />
-            </Box>
-            <Box gridColumn={{ xs: '1', md: '1 / -1' }}>
-              <TextField
-                fullWidth
-                label="Description of Accident"
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                required
-                multiline
-                rows={4}
-                placeholder="Please provide a detailed description of how the accident occurred..."
-              />
-            </Box>
-          </Box>
-        );
-
-      case 1:
-        return (
           <Box>
-            <Typography variant="h6" gutterBottom color="primary">
-              Required Documents
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Your Details
             </Typography>
-            <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: 'repeat(3, 1fr)' }} gap={3} mb={4}>
-              <FileUploadComponent
-                label="Insurance Document"
-                accept=".pdf,.jpg,.jpeg,.png"
-                required
-                onFileSelect={(file) => handleFileUpload('insurance', file)}
-                file={formData.documents.insurance}
+            <Typography variant="body2" color="text.secondary" gutterBottom mb={3}>
+              Please provide your personal information to start your claim.
+            </Typography>
+
+            <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr 1fr' }} gap={2}>
+              <TextField
+                size="small"
+                fullWidth
+                label="Full Name"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange('fullName', e.target.value)}
+                placeholder="John Doe"
               />
-              <FileUploadComponent
-                label="Driving License"
-                accept=".pdf,.jpg,.jpeg,.png"
-                required
-                onFileSelect={(file) => handleFileUpload('license', file)}
-                file={formData.documents.license}
+              <TextField
+                size="small"
+                fullWidth
+                label="Email Address"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder="john.doe@example.com"
               />
-              <FileUploadComponent
-                label="Car Registration"
-                accept=".pdf,.jpg,.jpeg,.png"
-                required
-                onFileSelect={(file) => handleFileUpload('registration', file)}
-                file={formData.documents.registration}
+              <TextField
+                size="small"
+                fullWidth
+                label="Phone Number"
+                value={formData.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                placeholder="+1 (555) 123-4567"
               />
             </Box>
-            
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" gutterBottom color="primary">
-              Additional Documents
-            </Typography>
-            
-            <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '2fr 1fr 1fr' }} gap={3}>
-              <FileUploadComponent
-                label="Accident Photographs"
-                accept=".jpg,.jpeg,.png"
-                multiple
-                onFileSelect={(files) => handleFileUpload('photos', files as File[])}
-                files={formData.documents.photos}
+
+            <Box mt={2} display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2}>
+              <TextField
+                size="small"
+                fullWidth
+                label="Street Address"
+                value={formData.street}
+                onChange={(e) => handleInputChange('street', e.target.value)}
+                placeholder="123 Main St"
               />
-              <FileUploadComponent
-                label="MV-104 Form"
-                accept=".pdf"
-                onFileSelect={(file) => handleFileUpload('mv104', file)}
-                file={formData.documents.mv104}
+              <TextField
+                size="small"
+                fullWidth
+                label="City"
+                value={formData.city}
+                onChange={(e) => handleInputChange('city', e.target.value)}
+                placeholder="New York"
               />
-              <FileUploadComponent
-                label="NF-2 Form"
-                accept=".pdf"
-                onFileSelect={(file) => handleFileUpload('nf2', file)}
-                file={formData.documents.nf2}
-              />
+              <TextField
+                select
+                size="small"
+                fullWidth
+                label="Country"
+                value={formData.country}
+                onChange={(e) => handleInputChange('country', e.target.value)}
+              >
+                <MenuItem value="USA">USA</MenuItem>
+                <MenuItem value="Canada">Canada</MenuItem>
+                <MenuItem value="India">India</MenuItem>
+              </TextField>
             </Box>
-          </Box>
-        );
-
-      case 2:
-        return (
-          <Box>
-            <Typography variant="h6" gutterBottom color="primary">
-              Review Your Claim Details
-            </Typography>
-            
-            <Card sx={{ mb: 3 }}>
-              <CardContent>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  Basic Information
-                </Typography>
-                <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={2}>
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">Policy Number</Typography>
-                    <Typography variant="body1">{formData.policyNumber}</Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">Accident Date</Typography>
-                    <Typography variant="body1">{new Date(formData.accidentDate).toLocaleDateString()}</Typography>
-                  </Box>
-                  <Box gridColumn={{ xs: '1', sm: '1 / -1' }}>
-                    <Typography variant="body2" color="text.secondary">Accident Location</Typography>
-                    <Typography variant="body1">{formData.accidentLocation}</Typography>
-                  </Box>
-                  <Box gridColumn={{ xs: '1', sm: '1 / -1' }}>
-                    <Typography variant="body2" color="text.secondary">Description</Typography>
-                    <Typography variant="body1">{formData.description}</Typography>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  Uploaded Documents
-                </Typography>
-                <List dense>
-                  {formData.documents.insurance && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText primary="Insurance Document" secondary={formData.documents.insurance.name} />
-                      <Chip label="Required" size="small" color="primary" />
-                    </ListItem>
-                  )}
-                  {formData.documents.license && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText primary="Driving License" secondary={formData.documents.license.name} />
-                      <Chip label="Required" size="small" color="primary" />
-                    </ListItem>
-                  )}
-                  {formData.documents.registration && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText primary="Car Registration" secondary={formData.documents.registration.name} />
-                      <Chip label="Required" size="small" color="primary" />
-                    </ListItem>
-                  )}
-                  {formData.documents.photos.length > 0 && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText 
-                        primary="Accident Photographs" 
-                        secondary={`${formData.documents.photos.length} file(s)`} 
-                      />
-                      <Chip label="Optional" size="small" color="secondary" />
-                    </ListItem>
-                  )}
-                  {formData.documents.mv104 && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText primary="MV-104 Form" secondary={formData.documents.mv104.name} />
-                      <Chip label="Optional" size="small" color="secondary" />
-                    </ListItem>
-                  )}
-                  {formData.documents.nf2 && (
-                    <ListItem>
-                      <CheckCircle color="success" sx={{ mr: 1 }} />
-                      <ListItemText primary="NF-2 Form" secondary={formData.documents.nf2.name} />
-                      <Chip label="Optional" size="small" color="secondary" />
-                    </ListItem>
-                  )}
-                </List>
-              </CardContent>
-            </Card>
           </Box>
         );
 
@@ -316,66 +119,50 @@ const SubmitClaimPage = () => {
   };
 
   return (
-    <Box>
-      <Box display="flex" alignItems="center" mb={4}>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={() => navigate('/')}
-          sx={{ mr: 2 }}
-        >
-          Back to Dashboard
-        </Button>
-        <Box>
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
-            Submit New Claim
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Complete the form below to submit your insurance claim
-          </Typography>
-        </Box>
-      </Box>
+    <Box maxWidth="md" mx="auto" mt={4}>
+      {/* Page Title */}
+      <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+        New Claim Submission
+      </Typography>
 
-      <Card sx={{ mb: 4 }}>
+      <Card sx={{ borderRadius: 3, boxShadow: 3, p: { xs: 2, md: 4 } }}>
         <CardContent>
-          <Stepper activeStep={activeStep} sx={{ mb: 4 }} orientation={isMobile ? 'vertical' : 'horizontal'}>
-            {steps.map((label) => (
+          {/* Stepper */}
+          <Stepper activeStep={activeStep} alternativeLabel={!isMobile} sx={{ mb: 4 }}>
+            {steps.map((label, index) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel
+                  sx={{
+                    '& .MuiStepLabel-label': { fontSize: '0.9rem', fontWeight: 500 },
+                    '& .MuiStepIcon-root': { color: '#d0d0d0' },
+                    '& .MuiStepIcon-root.Mui-active': { color: theme.palette.primary.main },
+                    '& .MuiStepIcon-root.Mui-completed': { color: theme.palette.success.main },
+                  }}
+                >
+                  {label}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
 
+          {/* Step Content */}
           {renderStepContent()}
 
-          <Box display="flex" justifyContent="space-between" mt={4}>
+          {/* Action Buttons */}
+          <Box display="flex" justifyContent="flex-end" mt={4}>
             <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              variant="outlined"
+              variant="contained"
+              onClick={handleNext}
+              size="medium"
+              sx={{
+                px: 4,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: 'bold',
+              }}
             >
-              Back
+              Next Step
             </Button>
-            
-            {activeStep === steps.length - 1 ? (
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={loading}
-                startIcon={loading ? <CircularProgress size={20} /> : <Send />}
-                size="large"
-              >
-                {loading ? 'Submitting...' : 'Submit Claim'}
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                disabled={!validateStep()}
-                size="large"
-              >
-                Next
-              </Button>
-            )}
           </Box>
         </CardContent>
       </Card>
