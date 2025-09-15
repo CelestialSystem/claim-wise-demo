@@ -54,61 +54,122 @@ const SubmitClaimPage = () => {
             </Typography>
 
             <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr 1fr' }} gap={2}>
+              <Box>
+              <Typography variant='h6'>First Name</Typography>
               <TextField
                 size="small"
                 fullWidth
-                label="Full Name"
+                variant="outlined"
                 value={formData.fullName}
                 onChange={(e) => handleInputChange('fullName', e.target.value)}
                 placeholder="John Doe"
+                sx={{
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               />
+              </Box>
+              <Box>
+              <Typography variant='h6'>Email</Typography>
               <TextField
                 size="small"
                 fullWidth
-                label="Email Address"
+                variant="outlined"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="john.doe@example.com"
+                sx={{
+                  marginBottom: '14px',
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               />
+              </Box>
+              <Box>
+              <Typography variant='h6'>Phone</Typography>
               <TextField
                 size="small"
                 fullWidth
-                label="Phone Number"
+                variant="outlined"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="+1 (555) 123-4567"
+                sx={{
+                  marginBottom: '14px',
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               />
+              </Box>
             </Box>
-
-            <Box mt={2} display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2}>
+            <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '3fr' }} gap={2}>
+            <Box>
+            <Typography variant='h6'>Street</Typography>
               <TextField
                 size="small"
                 fullWidth
-                label="Street Address"
+                variant="outlined"
                 value={formData.street}
                 onChange={(e) => handleInputChange('street', e.target.value)}
                 placeholder="123 Main St"
+                sx={{
+                  marginBottom: '14px',
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               />
+              </Box>
+              </Box>
+
+            <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr 1fr' }} gap={2}>
+              <Box>
+              <Typography variant='h6'>City</Typography>
               <TextField
                 size="small"
                 fullWidth
-                label="City"
+                variant="outlined"
                 value={formData.city}
                 onChange={(e) => handleInputChange('city', e.target.value)}
                 placeholder="New York"
+                sx={{
+                  marginBottom: '14px',
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               />
+              </Box>
+              <Box>
+              <Typography variant='h6'>Country</Typography>
               <TextField
                 select
                 size="small"
                 fullWidth
-                label="Country"
                 value={formData.country}
+                placeholder="Select"
                 onChange={(e) => handleInputChange('country', e.target.value)}
+                sx={{
+                  marginBottom: '14px',
+                  '& .MuiInputBase-input': {
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                  },
+                }}
               >
                 <MenuItem value="USA">USA</MenuItem>
                 <MenuItem value="Canada">Canada</MenuItem>
                 <MenuItem value="India">India</MenuItem>
               </TextField>
+              </Box>
             </Box>
           </Box>
         );
@@ -121,12 +182,14 @@ const SubmitClaimPage = () => {
   return (
     <Box maxWidth="md" mx="auto" mt={4}>
       {/* Page Title */}
-      <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+    
+
+      <Card sx={{ borderRadius: '16px', border: '1px solid #E2E8F0', padding: '24px', boxShadow: 'none' }}>
+
+        <CardContent>
+        <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
         New Claim Submission
       </Typography>
-
-      <Card sx={{ borderRadius: 3, boxShadow: 3, p: { xs: 2, md: 4 } }}>
-        <CardContent>
           {/* Stepper */}
           <Stepper activeStep={activeStep} alternativeLabel={!isMobile} sx={{ mb: 4 }}>
             {steps.map((label, index) => (
@@ -156,9 +219,9 @@ const SubmitClaimPage = () => {
               size="medium"
               sx={{
                 px: 4,
-                borderRadius: 2,
-                textTransform: 'none',
-                fontWeight: 'bold',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                backgroundColor: 'linear-gradient(135deg, #636cf1 0%, #4a54e1 100%)',
               }}
             >
               Next Step

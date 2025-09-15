@@ -237,7 +237,7 @@ const ApplicationStatusPage = () => {
       <Typography variant="body1" color="text.secondary" mb={4}>
         Track the progress of your insurance claim
       </Typography>
-      <Box sx={{ p: 3 }}>
+      <Box>
       {/* Filters */}
       <Box
         sx={{
@@ -245,17 +245,16 @@ const ApplicationStatusPage = () => {
           justifyContent: "space-between",
           alignItems: "center",
           mb: 3,
-          p: 2,
-          borderRadius: 2,
-          border: "1px solid #eee",
           backgroundColor: "#fff",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+          borderRadius: '16px', 
+          padding: '16px', 
+          border: '1px solid #E2E8F0',
           flexWrap: "wrap",
           gap: 2,
         }}
       >
         {/* Filter by Status */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, }}>
           <Typography fontWeight="bold">Filter by Status:</Typography>
           <Select
             size="small"
@@ -263,7 +262,10 @@ const ApplicationStatusPage = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             sx={{
               minWidth: 160,
-              borderRadius: 2,
+              '& .MuiInputBase-input': {
+                padding: '12px',
+                borderRadius : '10px',
+              },
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ddd" },
             }}
           >
@@ -285,7 +287,10 @@ const ApplicationStatusPage = () => {
             onChange={(e) => setSortOrder(e.target.value)}
             sx={{
               minWidth: 160,
-              borderRadius: 2,
+              '& .MuiInputBase-input': {
+                padding: '12px',
+                borderRadius : '10px',
+              },
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ddd" },
             }}
           >
@@ -302,6 +307,7 @@ const ApplicationStatusPage = () => {
           flexWrap: "wrap",
           gap: 2,
           justifyContent: "flex-start",
+          marginBottom: '18px',
         }}
       >
         {filteredClaims.map((claim) => (
@@ -310,13 +316,15 @@ const ApplicationStatusPage = () => {
             sx={{
               flex: "1 1 calc(33.333% - 16px)", // 3 per row
               minWidth: "300px",
-              borderRadius: 3,
-              boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
+              borderRadius: '16px', 
+              padding: '16px', 
+              border: '1px solid #E2E8F0',
               position: "relative",
+              boxShadow: 'none',
               "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },
             }}
           >
-            <CardContent>
+            <CardContent sx={{ padding: '0px', }}>
               <Typography variant="h6" fontWeight="bold">
                 Claim ID: {claim.id}
               </Typography>
@@ -339,7 +347,8 @@ const ApplicationStatusPage = () => {
                   position: "absolute",
                   top: 16,
                   right: 16,
-                  fontWeight: "bold",
+                  padding: '0px 8px',
+                  fontSize: '12px',
                 }}
               />
             </CardContent>
@@ -349,7 +358,7 @@ const ApplicationStatusPage = () => {
     </Box>
       <Box display="flex" flexDirection={isMobile ? 'column' : 'row'} gap={3}>
         <Box flex={isMobile ? 1 : 2}>
-          <Card sx={{ mb: 3 }}>
+          {/* <Card sx={{ mb: 3 }}>
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={3}>
                 <Box>
@@ -391,9 +400,9 @@ const ApplicationStatusPage = () => {
                 </Box>
               </Box>
             </CardContent>
-          </Card>
+          </Card> */}
 
-          <Card sx={{ borderRadius: 3, p: 2 }}>
+          <Card sx={{ boxShadow: 'none', borderRadius: '16px', padding: '16px', border: '1px solid #E2E8F0', }}>
       <CardContent>
         <Typography variant="h6" fontWeight="bold" gutterBottom>
           Claim Timeline
@@ -462,6 +471,7 @@ const ApplicationStatusPage = () => {
                       borderRadius: 2,
                       borderColor: "grey.300",
                       bgcolor: "grey.50",
+                      boxShadow: 'none',
                     }}
                   >
                     <CardContent>
@@ -494,7 +504,7 @@ const ApplicationStatusPage = () => {
         </Box>
 
         <Box flex={isMobile ? 1 : 1} maxWidth={isMobile ? '100%' : '400px'}>
-          <Card>
+          <Card sx={{ boxShadow: 'none' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Your Claims Adjuster
