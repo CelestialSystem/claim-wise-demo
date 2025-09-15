@@ -102,7 +102,7 @@ const FAQsPage = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ width: '75%', margin: 'auto' }}>
       <Box textAlign="center" mb={4}>
         <HelpOutline sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
         <Typography variant="h4" fontWeight="bold" gutterBottom>

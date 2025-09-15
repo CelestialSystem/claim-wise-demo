@@ -31,11 +31,13 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import React from 'react';
+import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 
 const drawerWidth = 280;
 
 const navigationItems = [
   { text: 'Claims Dashboard', icon: <Dashboard />, path: '/' },
+  { text:'Claims Table', icon:<TextSnippetOutlinedIcon/> , path: '/claims-table'},
   { text: 'Submit New Claim', icon: <Add />, path: '/submit-claim' },
   { text: 'Application Status', icon: <Assignment />, path: '/status' },
   { text: 'FAQs', icon: <Help />, path: '/faqs' },

@@ -20,6 +20,7 @@ import ApplicationStatusPage from './pages/dashboard/ApplicationStatusPage';
 import FAQsPage from './pages/dashboard/FAQsPage';
 
 import NotFound from './pages/NotFound';
+import ClaimTablePage from './pages/dashboard/ClaimTablePage';
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => {
               {/* Protected Dashboard Routes */}
               <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
                 <Route index element={<ClaimsListPage />} />
+                <Route path="claims-table" element={<ClaimTablePage />} />
                 <Route path="submit-claim" element={<SubmitClaimPage />} />
                 <Route path="status" element={<ApplicationStatusPage />} />
                 <Route path="faqs" element={<FAQsPage />} />
