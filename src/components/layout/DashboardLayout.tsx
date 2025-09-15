@@ -30,6 +30,7 @@ import {
   Logout,
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
+import React from 'react';
 
 const drawerWidth = 280;
 
@@ -69,7 +70,12 @@ const DashboardLayout = () => {
 
   const drawer = (
     <Box>
-      <Box sx={{ p: 3, borderBottom: '1px solid', borderColor: 'divider' }}>
+      <Box sx={{
+        padding:"9px 15px", 
+        borderBottom: '1px solid', 
+        borderColor: 'divider',
+        height:"64px",
+        }}>
         <Typography variant="h5" color="primary" fontWeight="bold">
           ClaimWise
         </Typography>
@@ -81,30 +87,33 @@ const DashboardLayout = () => {
         {navigationItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
-            <ListItem key={item.text} disablePadding sx={{ px: 2, mb: 1 }}>
+            <ListItem key={item.text} disablePadding sx={{ px: 1.5, mb: 1 }}>
               <ListItemButton
                 onClick={() => navigate(item.path)}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: .5,
                   backgroundColor: isActive ? 'primary.main' : 'transparent',
                   color: isActive ? 'primary.contrastText' : 'text.primary',
                   '&:hover': {
-                    backgroundColor: isActive ? 'primary.dark' : 'action.hover',
+                    backgroundColor: isActive ? 'primary.main' : 'action.hover',
                   },
+                  padding:'5px 10px'
                 }}
               >
                 <ListItemIcon
                   sx={{
-                    color: isActive ? 'primary.contrastText' : 'primary.main',
                     minWidth: 40,
+                    color: isActive ? 'primary.contrastText' : '#77787e',
                   }}
                 >
-                  {item.icon}
+                 {React.cloneElement(item.icon, { sx: { fontSize: 18 } })} 
                 </ListItemIcon>
                 <ListItemText 
                   primary={item.text}
                   primaryTypographyProps={{
                     fontWeight: isActive ? 600 : 500,
+                    color: isActive ? 'primary.contrastText' : '#77787e',
+                    fontSize:'14px'
                   }}
                 />
               </ListItemButton>
@@ -125,9 +134,11 @@ const DashboardLayout = () => {
           ml: { md: `${drawerWidth}px` },
           backgroundColor: 'background.paper',
           color: 'text.primary',
-          boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
+          boxShadow: 'none',
           borderBottom: '1px solid',
           borderColor: 'divider',
+          boxSizing:'border-box',
+          height:'64px'
         }}
       >
         <Toolbar>
@@ -229,7 +240,7 @@ const DashboardLayout = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 4,
           width: { md: `calc(100% - ${drawerWidth}px)` },
           mt: 8,
           minHeight: 'calc(100vh - 64px)',

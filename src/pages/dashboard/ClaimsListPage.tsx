@@ -17,9 +17,13 @@ import {
   Fab,
   useTheme,
   useMediaQuery,
+  IconButton,
 } from '@mui/material';
 import { Add, Visibility, Description } from '@mui/icons-material';
-
+import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
+import BookmarkAddedRoundedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import HourglassTopRoundedIcon from '@mui/icons-material/HourglassTopRounded';
+import PendingActionsRoundedIcon from '@mui/icons-material/PendingActionsRounded';
 interface Claim {
   id: string;
   policyNumber: string;
@@ -82,7 +86,7 @@ const ClaimsListPage = () => {
   };
 
   const ClaimCard = ({ claim }: { claim: Claim }) => (
-    <Card sx={{ mb: 2 }}>
+    <Card sx={{ mb: 2, boxShadow: "none" }}>
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
           <Typography variant="h6" color="primary">
@@ -134,10 +138,10 @@ const ClaimsListPage = () => {
         {!isMobile && (
           <Button
             variant="contained"
-            size="large"
+            size="small"
             startIcon={<Add />}
             onClick={() => navigate('/submit-claim')}
-            sx={{ minWidth: 200 }}
+            sx={{ padding: "10px 20px" }}
           >
             Submit New Claim
           </Button>
@@ -145,43 +149,52 @@ const ClaimsListPage = () => {
       </Box>
 
       <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' }} gap={3} mb={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h4" color="primary" fontWeight="bold">
-              {claims.length}
-            </Typography>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <Box>
+              <ReceiptLongRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
+            </Box>
             <Typography variant="body2" color="text.secondary">
               Total Claims
             </Typography>
+            <Typography variant="h4" color="primary" fontWeight="bold" sx={{ fontSize: '25px' }}>
+              7,445
+            </Typography>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h4" color="success.main" fontWeight="bold">
-              {claims.filter(c => c.status === 'Approved').length}
-            </Typography>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
+            <BookmarkAddedRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
+          </Box>
             <Typography variant="body2" color="text.secondary">
               Approved
             </Typography>
+            <Typography variant="h4" color="success.main" fontWeight="bold" sx={{ fontSize: '25px' }}>
+              467
+            </Typography>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h4" color="warning.main" fontWeight="bold">
-              {claims.filter(c => c.status === 'In Progress').length}
-            </Typography>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
+            <HourglassTopRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
+          </Box>
             <Typography variant="body2" color="text.secondary">
               In Progress
             </Typography>
+            <Typography variant="h4" color="warning.main" fontWeight="bold" sx={{ fontSize: '25px' }}>
+              578
+            </Typography>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h4" color="info.main" fontWeight="bold">
-              {claims.filter(c => c.status === 'Pending Review').length}
-            </Typography>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>            <Box>
+            <PendingActionsRoundedIcon sx={{ color: '#8f939c', fontSize: '30px' }} />
+          </Box>
             <Typography variant="body2" color="text.secondary">
               Pending Review
+            </Typography>
+            <Typography variant="h4" color="info.main" fontWeight="bold" sx={{ fontSize: '25px' }}>
+              213
             </Typography>
           </CardContent>
         </Card>
@@ -194,61 +207,64 @@ const ClaimsListPage = () => {
           ))}
         </Box>
       ) : (
-        <Card>
-          <CardContent>
-            <Box display="flex" alignItems="center" mb={3}>
-              <Description sx={{ mr: 1, color: 'primary.main' }} />
-              <Typography variant="h6">Recent Claims</Typography>
-            </Box>
-            <TableContainer component={Paper} elevation={0}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell><strong>Claim ID</strong></TableCell>
-                    <TableCell><strong>Policy Number</strong></TableCell>
-                    <TableCell><strong>Date Submitted</strong></TableCell>
-                    <TableCell><strong>Status</strong></TableCell>
-                    <TableCell><strong>Estimated Amount</strong></TableCell>
-                    <TableCell><strong>Actions</strong></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {claims.map((claim) => (
-                    <TableRow key={claim.id} hover>
-                      <TableCell>
-                        <Typography variant="body2" color="primary" fontWeight="600">
-                          {claim.id}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>{claim.policyNumber}</TableCell>
-                      <TableCell>{new Date(claim.dateSubmitted).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Chip
-                          label={claim.status}
-                          color={getStatusColor(claim.status) as any}
-                          size="small"
-                        />
-                      </TableCell>
-                      <TableCell>{claim.estimatedAmount}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          startIcon={<Visibility />}
-                          onClick={() => navigate('/status')}
-                        >
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </CardContent>
-        </Card>
-      )}
+        <>
+          <Box display="flex" alignItems="center" mb={3}>
+            <Typography variant="h4">Recent Claims</Typography>
+          </Box>
+          <Card sx={{ boxShadow: "none" }}>
+            <CardContent>
 
+              <TableContainer component={Paper} elevation={0}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ padding: "10px" }}><strong>Claim ID</strong></TableCell>
+                      <TableCell sx={{ padding: "10px" }}><strong>Policy Number</strong></TableCell>
+                      <TableCell sx={{ padding: "10px" }}><strong>Date Submitted</strong></TableCell>
+                      <TableCell sx={{ padding: "10px" }}><strong>Status</strong></TableCell>
+                      <TableCell sx={{ padding: "10px" }}><strong>Estimated Amount</strong></TableCell>
+                      <TableCell sx={{ padding: "10px" }}><strong>Actions</strong></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {claims.map((claim) => (
+                      <TableRow key={claim.id} hover>
+                        <TableCell sx={{ padding: "10px" }}>
+                          <Typography variant="body2" color="primary" fontWeight="600">
+                            {claim.id}
+                          </Typography>
+                        </TableCell>
+                        <TableCell sx={{ padding: "10px" }}>{claim.policyNumber}</TableCell>
+                        <TableCell sx={{ padding: "10px" }}>{new Date(claim.dateSubmitted).toLocaleDateString()}</TableCell>
+                        <TableCell sx={{ padding: "10px" }}>
+                          <Chip
+                            label={claim.status}
+                            color={getStatusColor(claim.status) as any}
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell sx={{ padding: "10px" }}>{claim.estimatedAmount}</TableCell>
+                        <TableCell sx={{ padding: "10px" }}>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            startIcon={<Visibility />}
+                            onClick={() => navigate('/status')}
+                            sx={{ padding: "5px 10px" }}
+                          >
+                            View
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </>
+
+      )}
       {isMobile && (
         <Fab
           color="primary"
