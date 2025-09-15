@@ -38,48 +38,50 @@ export const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '2.5rem',
+      fontSize: '21px',   // was 2.5rem (~40px)
       fontWeight: 700,
-      lineHeight: 1.2,
+      lineHeight: 1.3,
       color: '#1E293B',
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '20px',   // was 2rem (~32px)
       fontWeight: 600,
       lineHeight: 1.3,
       color: '#1E293B',
     },
     h3: {
-      fontSize: '1.5rem',
+      fontSize: '19px',   // was 1.5rem (~24px)
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1E293B',
     },
     h4: {
-      fontSize: '1.25rem',
+      fontSize: '18px',   // was 1.25rem (~20px)
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1E293B',
     },
     h5: {
-      fontSize: '1.125rem',
+      fontSize: '16px',   // was 1.125rem (~18px)
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1E293B',
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: '14px',   // was 1rem (~16px)
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1E293B',
     },
+  
+    // Body text
     body1: {
-      fontSize: '1rem',
+      fontSize: '14px',   // kept inside range
       lineHeight: 1.6,
       color: '#475569',
     },
     body2: {
-      fontSize: '0.875rem',
+      fontSize: '12px',   // min threshold
       lineHeight: 1.6,
       color: '#64748B',
     },
