@@ -8,8 +8,11 @@ import {
   AccordionSummary,
   AccordionDetails,
   Chip,
+  InputAdornment,
+  TextField,
+  Button,
 } from '@mui/material';
-import { ExpandMore, HelpOutline } from '@mui/icons-material';
+import { AccessTime, Call, Email, ExpandMore, HelpOutline, Search } from '@mui/icons-material';
 
 interface FAQ {
   id: string;
@@ -87,8 +90,8 @@ const FAQsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [expandedPanel, setExpandedPanel] = useState<string | false>(false);
 
-  const filteredFAQs = selectedCategory === 'All' 
-    ? faqs 
+  const filteredFAQs = selectedCategory === 'All'
+    ? faqs
     : faqs.filter(faq => faq.category === selectedCategory);
 
   const handleAccordionChange = (panel: string) => (
@@ -110,8 +113,12 @@ const FAQsPage = () => {
         </Typography>
       </Box>
 
-      <Box mb={4}>
-        <Typography variant="h6" gutterBottom>
+      <Box mb={4}
+      sx={{
+        display:{xs:'none',sm:'block', md:'block'}
+      }}
+      >
+        <Typography variant="h5" gutterBottom mb={2} >
           Filter by Category
         </Typography>
         <Box display="flex" flexWrap="wrap" gap={1}>
@@ -128,54 +135,78 @@ const FAQsPage = () => {
         </Box>
       </Box>
 
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+      <Card
+        sx={{
+          boxShadow: "none",
+          border: "none",
+          background: "transparent",
+        }}
+      >
+        <CardContent sx={{ padding: '0' }}>
+          <Typography variant="h5" gutterBottom>
             {selectedCategory === 'All' ? 'All Questions' : `${selectedCategory} Questions`}
-            <Chip 
-              label={filteredFAQs.length} 
-              size="small" 
-              sx={{ ml: 1 }} 
+            <Chip
+              label={filteredFAQs.length}
+              size="small"
+              sx={{ 
+                m: 1 ,
+                display:{xs:'none',sm:'inline-flex', md:'inline-flex'}
+              }}
             />
           </Typography>
-          
-          <Box mt={2}>
+
+          <Box>
             {filteredFAQs.map((faq) => (
               <Accordion
                 key={faq.id}
                 expanded={expandedPanel === faq.id}
                 onChange={handleAccordionChange(faq.id)}
-                sx={{ 
-                  mb: 1,
-                  '&:before': { display: 'none' },
-                  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)',
-                  borderRadius: '8px !important',
+                disableGutters
+                elevation={0}
+                square
+                sx={{
+                  mb: 0,
+                  marginInline: {sm:0, md:5},
+                  boxShadow: "none",
+                  borderBottom: "1px solid #e5e7eb",
+                  "&:before": { display: "none" },
+                  background: "transparent",
                 }}
               >
                 <AccordionSummary
-                  expandIcon={<ExpandMore />}
+                  expandIcon={<ExpandMore sx={{ color: "#555" }} />}
                   aria-controls={`panel${faq.id}-content`}
                   id={`panel${faq.id}-header`}
                   sx={{
-                    '& .MuiAccordionSummary-content': {
-                      alignItems: 'center',
+                    px: 0,
+                    display: "flex",
+                    "& .MuiAccordionSummary-content": {
+                      margin: 0,
+                      width: "100%",
+                      display: "block"
                     },
                   }}
                 >
-                  <Box>
+                  <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+
+                    <Typography variant="h6" sx={{ fontWeight: 600, py: 3 }}>
+                      {faq.question}
+                    </Typography>
                     <Chip
                       label={faq.category}
                       size="small"
                       variant="outlined"
-                      sx={{ mr: 2, mb: 1 }}
+                      sx={{ 
+                        mr: 3,
+                        display:{xs:'none',sm:'inline-flex', md:'inline'}
+                      }}
                     />
-                    <Typography variant="h6" sx={{ fontWeight: 500 }}>
-                      {faq.question}
-                    </Typography>
                   </Box>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
+                <AccordionDetails sx={{ px: 1 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary", lineHeight: 1.6 }}>
                     {faq.answer}
                   </Typography>
                 </AccordionDetails>
@@ -193,30 +224,52 @@ const FAQsPage = () => {
         </CardContent>
       </Card>
 
-      <Card sx={{ mt: 4 }}>
-        <CardContent>
+      <Card sx={{
+        mt: 4,
+        boxShadow: "none",
+      }}>
+        <CardContent sx={{p:'30px'}}>
           <Typography variant="h6" gutterBottom>
             Still have questions?
           </Typography>
           <Typography variant="body2" color="text.secondary" mb={2}>
             If you couldn't find the answer you're looking for, our customer support team is here to help.
           </Typography>
-          <Box display="flex" gap={2} flexWrap="wrap">
-            <Chip
-              label="📞 1-800-CLAIMWISE"
-              variant="outlined"
-              color="primary"
-            />
-            <Chip
-              label="✉️ support@claimwise.com"
-              variant="outlined"
-              color="primary"
-            />
-            <Chip
-              label="💬 Live Chat (24/7)"
-              variant="outlined"
-              color="primary"
-            />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: 'column',
+              gap: "18px",
+            }}
+          >
+            <Box sx={{
+              display: "flex",
+              gap: "15px",
+            }}>
+              <Call sx={{color:"primary.main"}}/>
+              <Typography variant='h6'>+1(800)-234-9857</Typography>
+            </Box >
+            <Box sx={{
+              display: "flex",
+              gap: "15px",
+            }}>
+              <Email sx={{color:"primary.main"}} />
+              <Typography variant='h6'>support@claimwise.com</Typography>
+            </Box>
+            <Box sx={{
+              display: "flex",
+              gap: "15px",
+            }}>
+              <AccessTime sx={{color:"primary.main"}} />
+              <Typography variant='h6'>Mon-Fri : 9:00AM-6:00PM EST</Typography>
+            </Box>
+            <Box sx={{
+              display: "flex",
+              gap: "15px",
+            }}>
+              <Button size="small" variant='contained' sx={{ padding: "6px 20px" }}>Call Support</Button>
+              <Button size="small" variant='outlined' sx={{ padding: "6px 20px" }}>Email Us</Button>
+            </Box>
           </Box>
         </CardContent>
       </Card>
